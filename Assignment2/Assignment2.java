@@ -1,33 +1,65 @@
-
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.util.Scanner;
 /**
- * This is the assignment2.
+ * Write a description of class Fil here.
  *
- * @author (Subina)
+ * @author (your name)
  * @version (a version number or a date)
  */
 public class Assignment2
 {
     // instance variables - replace the example below with your own
-    private int x;
-
-    /**
-     * Constructor for objects of class Assignment2
-     */
+    private File myFile;
+    
+    //call methods in constructor,nothing else
     public Assignment2()
     {
-        // initialise instance variables
-        x = 0;
+        
+  
+        writeToFile();
+        readFromFile();
+        
     }
-
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+    
+    
+    //writing to a file
+    public void writeToFile(){
+    try{
+            File myFile = new File ("prog5001_students_grade_2022.csv");
+            FileWriter myWriter = new FileWriter(myFile);
+            myWriter.write ("Files in Java are really easy!");
+            myWriter.close();
+        }
+        catch(IOException e){
+            System.out.println ("Error");
+            e.printStackTrace();
+        }
     }
+    
+    //reading contents of the file
+    public void readFromFile(){
+         try{
+        File myFile = new File("week3.txt");
+        Scanner myScanner = new Scanner(myFile);
+        while (myScanner.hasNextLine()){
+            String line = myScanner.nextLine();
+         System.out.println(line); // Print each line from the file
+            //  runMethod (userOption);
+              }
+              myScanner.close();
+        }
+        catch(IOException e){
+            System.out.println ("Error");
+            e.printStackTrace();
+        }
+    
+    }
+    
+   // public void runMethod(){
+    //if (userOption == 1){readFromFile();}
+    //else if (userOption == 2) {writeToFile();}
+    //else if (userOption == 3) ;{createFile();}
+    //}
 }
