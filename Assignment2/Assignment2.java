@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Write a description of class Fil here.
  *
- * @author (your name)
+ * @author (Subina)
  * @version (a version number or a date)
  */
 public class Assignment2
@@ -41,7 +41,7 @@ public class Assignment2
     //reading contents of the file
     public void readFromFile(){
          try{
-        File myFile = new File("week3.txt");
+        File myFile = new File("prog5001_students_grade_2022.csv");
         Scanner myScanner = new Scanner(myFile);
         while (myScanner.hasNextLine()){
             String line = myScanner.nextLine();
