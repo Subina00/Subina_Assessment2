@@ -1,9 +1,7 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.FileWriter;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 /**
- * Write a description of class Fil here.
+ * This is the assignment2.
  *
  * @author (Subina)
  * @version (a version number or a date)
@@ -11,55 +9,55 @@ import java.util.Scanner;
 public class Assignment2
 {
     // instance variables - replace the example below with your own
-    private File myFile;
-    
-    //call methods in constructor,nothing else
+
+    /**
+     * Constructor for objects of class Week5Token
+     */
     public Assignment2()
     {
-        
-  
-        writeToFile();
-        readFromFile();
-        
+        // initialise instance variables
+
     }
-    
-    
-    //writing to a file
-    public void writeToFile(){
-    try{
-            File myFile = new File ("prog5001_students_grade_2022.csv");
-            FileWriter myWriter = new FileWriter(myFile);
-            myWriter.write ("Files in Java are really easy!");
-            myWriter.close();
+
+    public void readFromFile() throws Exception {
+        List<Student> students = new ArrayList<>();
+        Scanner fileScanner = new Scanner(new File("prog5001_students_grade_2022.csv"));
+
+        while (fileScanner.hasNextLine()) {
+
+            String line = fileScanner.nextLine();
+
+            if (line.startsWith("#")) { // Ignore comment lines
+                continue;
+            }
+
+            String[] values = line.split(",");
+            if (values.length != 6) { // Ensuring valid data ignores the empty cells replace this by changing the null values to 0
+                continue;
+            }
+
+            String lastName = values[0].trim();
+            String firstName = values[1].trim();
+            String studentID = values[2].trim();
+            try{
+                double mark1 = Double.parseDouble(values[3].trim());
+                Student student = new Student(firstName,lastName, studentID, mark1);
+                students.add(student);
+            }catch(NumberFormatException e){
+                System.out.println( "");
+            }
         }
-        catch(IOException e){
-            System.out.println ("Error");
-            e.printStackTrace();
+
+        fileScanner.close();
+        printStudents(students);
+    }
+
+    public  void printStudents(List<Student> students) {
+        for (Student s : students) {
+            System.out.println( s.firstName+" "+" "+s.studentID+ " "+s.assign1);
         }
     }
-    
-    //reading contents of the file
-    public void readFromFile(){
-         try{
-        File myFile = new File("prog5001_students_grade_2022.csv");
-        Scanner myScanner = new Scanner(myFile);
-        while (myScanner.hasNextLine()){
-            String line = myScanner.nextLine();
-         System.out.println(line); // Print each line from the file
-            //  runMethod (userOption);
-              }
-              myScanner.close();
-        }
-        catch(IOException e){
-            System.out.println ("Error");
-            e.printStackTrace();
-        }
-    
-    }
-    
-   // public void runMethod(){
-    //if (userOption == 1){readFromFile();}
-    //else if (userOption == 2) {writeToFile();}
-    //else if (userOption == 3) ;{createFile();}
-    //}
+
+
+
 }
