@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Assignment2
+comment0.text=\n\ This\ is\ the\ assignment2.\n\n\ @author\ (Subina)\n\ @version\ (a\ version\ number\ or\ a)\n
+comment1.params=
+comment1.target=Assignment2()
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Assignment2.\n
+comment2.params=
+comment2.target=void\ readFromFile()
+comment3.params=students
+comment3.target=void\ printStudents(java.util.List)
+numComments=4

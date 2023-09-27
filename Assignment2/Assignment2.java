@@ -4,14 +4,14 @@ import java.io.*;
  * This is the assignment2.
  *
  * @author (Subina)
- * @version (a version number or a date)
+ * @version (a version number or a)
  */
 public class Assignment2
 {
     // instance variables - replace the example below with your own
 
     /**
-     * Constructor for objects of class Week5Token
+     * Constructor for objects of class Assignment2.
      */
     public Assignment2()
     {
@@ -21,7 +21,7 @@ public class Assignment2
 
     public void readFromFile() throws Exception {
         List<Student> students = new ArrayList<>();
-        Scanner fileScanner = new Scanner(new File("prog5001_students_grade_2022.csv"));
+        Scanner fileScanner = new Scanner(new File("Studentsfile.csv"));
 
         while (fileScanner.hasNextLine()) {
 
