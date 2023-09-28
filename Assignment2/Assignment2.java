@@ -1,10 +1,10 @@
 import java.util.*;
 import java.io.*;
 /**
- * This is the assignment2.
+ * This is the assignment2 where we have to develop a simple program to compute statistics of students' marks in an assignment.
  *
  * @author (Subina)
- * @version (a version number or a)
+ * @version (version 1.0 26/09/2023)
  */
 
 public class Assignment2 {
