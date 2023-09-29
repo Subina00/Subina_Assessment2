@@ -1,14 +1,15 @@
 import java.util.*;
 import java.io.*;
-/**
- * This is the assignment2 where we have to develop a simple program to compute statistics of students' marks in an assignment.
- *
- * @author (Subina)
- * @version (version 1.0 26/09/2023)
- */
 
+/**
+ * This is the Assignment2 program that computes statistics of students' marks in an assignment.
+ *
+ * @author Subina
+ * @version 1.0 (26/09/2023)
+ */
 public class Assignment2 {
 
+// Inner class to represent a Student
 static class Student {
     String lastName, firstName, studentID;
     double[] marks;
@@ -21,15 +22,18 @@ static class Student {
         }
 
     public double getTotalMarks() {
-            return Arrays.stream(marks).sum();
-    }
+        return Arrays.stream(marks).sum();
+        }
     }
 
+/**
+* Main method to run the program.
+*/
 public static void main(String[] args) {
-    try {
-        List<Student> students = readDataFromFile("Studentsfile.csv");
+        try {
+            List<Student> students = readDataFromFile("Studentsfile.csv");
 
-        // Menu System
+            // Menu System
         Scanner scanner = new Scanner(System.in);
         int choice;
         do {
@@ -38,7 +42,7 @@ public static void main(String[] args) {
             System.out.println("2. Print Students Scoring Less Than the Threshold");
             System.out.println("3. Print Top 5 Students With Highest and Lowest Total Marks");
             System.out.println("4. Exit");
-            System.out.print("Enter a number to proceed: ");
+            System.out.print("Please select an option (1/2/3/4): ");
             choice = scanner.nextInt();
 
             switch (choice) {
@@ -61,18 +65,24 @@ public static void main(String[] args) {
                     break;
 
                 default:
-                    System.out.println("Incorrect selection. Please retry.");
+                    System.out.println("Invalid selection. Please choose a valid option.");
                     break;
-                }
-            } while (choice != 4);
+            }
+        } while (choice != 4);
 
         scanner.close();
-        } catch (IOException e) {
-        System.out.println("File reading error: " + e.getMessage());
-        }
+    } catch (IOException e) {
+        System.err.println("File reading error: " + e.getMessage());
     }
+}
 
-// Function to read data from file
+/**
+     * Reads student data from a CSV file and returns a list of Student objects.
+     *
+     * @param fileName The name of the CSV file to read.
+     * @return A list of Student objects.
+     * @throws IOException If there is an error reading the file.
+     */
 static List<Student> readDataFromFile(String fileName) throws IOException {
     List<Student> students = new ArrayList<>();
     BufferedReader reader = new BufferedReader(new FileReader(fileName));
@@ -92,17 +102,17 @@ static List<Student> readDataFromFile(String fileName) throws IOException {
                         if (parts[i].isEmpty()) {
                             // Handle empty cells by considering them as 0
                             marks[i - 3] = 0.0;
-                        } else {
-                            marks[i - 3] = Double.parseDouble(parts[i]);
+                            } else {
+                                marks[i - 3] = Double.parseDouble(parts[i]);
+                            }
+                        } catch (NumberFormatException e) {
+                            System.err.println("Error in processing student marks: " + line);
+                            break;
                         }
-                    } catch (NumberFormatException e) {
-                        System.err.println("Error in processing student marks: " + line);
-                        break;
                     }
-                }
 
                 students.add(new Student(lastName, firstName, studentID, marks));
-            } else {
+                } else {
                 System.err.println("Skipped line with insufficient data: " + line);
             }
         }
@@ -112,25 +122,34 @@ static List<Student> readDataFromFile(String fileName) throws IOException {
     return students;
 }
 
-// Function to print students with total marks
+/**
+    * Prints the details of students along with their total marks.
+    *
+    * @param students The list of Student objects to print.
+    */
 static void printStudentsWithTotalMarks(List<Student> students) {
-for (Student student : students) {
-    System.out.print(student.lastName + ", " + student.firstName +
-            " (ID: " + student.studentID + ") - Assignment Marks: [");
-        
-    // Print marks with "0.0" for empty cells
-    for (int i = 0; i < student.marks.length; i++) {
-        if (i > 0) {
-            System.out.print(", ");
-        }
-        System.out.print(student.marks[i]);
-        }
+    for (Student student : students) {
+        System.out.print(student.lastName + ", " + student.firstName +
+                " (ID: " + student.studentID + ") - Assignment Marks: [");
 
-    System.out.println("] - Total Marks: " + student.getTotalMarks());
+        // Print marks with "0.0" for empty cells
+        for (int i = 0; i < student.marks.length; i++) {
+            if (i > 0) {
+                System.out.print(", ");
+            }
+            System.out.print(student.marks[i]);
+            }
+
+        System.out.println("] - Total Marks: " + student.getTotalMarks());
     }
 }
 
-// Function to print students with total marks below threshold
+/**
+    * Prints students with total marks below a specified threshold.
+    *
+    * @param students  The list of Student objects to print.
+    * @param threshold The threshold for total marks.
+    */
 static void printStudentsBelowThreshold(List<Student> students, double threshold) {
     System.out.println("Students Scoring Less Than the Threshold:");
     for (Student student : students) {
@@ -138,12 +157,16 @@ static void printStudentsBelowThreshold(List<Student> students, double threshold
             System.out.println(student.lastName + ", " + student.firstName +
                     " (ID: " + student.studentID + ") - Assignment Marks: " +
                     Arrays.toString(student.marks) + " - Total Marks: " + student.getTotalMarks());
-            }
         }
     }
+}
 
-// Function to print top 5 students with highest and lowest total marks
-static void printTopStudents(List<Student> students) {
+/**
+    * Prints the top 5 students with the highest and lowest total marks.
+    *
+    * @param students The list of Student objects to print.
+    */
+    static void printTopStudents(List<Student> students) {
     students.sort(Comparator.comparingDouble(Student::getTotalMarks).reversed());
 
     System.out.println("Top 5 Students with Highest Total Marks:");
@@ -152,7 +175,7 @@ static void printTopStudents(List<Student> students) {
         System.out.println(student.lastName + ", " + student.firstName +
                 " (ID: " + student.studentID + ") - Assignment Marks: " +
                 Arrays.toString(student.marks) + " - Total Marks: " + student.getTotalMarks());
-        }
+    }
 
     System.out.println("\nTop 5 Students with Lowest Total Marks:");
     for (int i = 0; i < Math.min(5, students.size()); i++) {
@@ -162,4 +185,4 @@ static void printTopStudents(List<Student> students) {
                 Arrays.toString(student.marks) + " - Total Marks: " + student.getTotalMarks());
         }
     }
-} 
+}
