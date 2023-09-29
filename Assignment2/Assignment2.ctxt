@@ -1,6 +1,14 @@
 #BlueJ class context
 comment0.target=Assignment2
 comment0.text=\n\ This\ is\ the\ assignment2\ where\ we\ have\ to\ develop\ a\ simple\ program\ to\ compute\ statistics\ of\ students'\ marks\ in\ an\ assignment.\n\n\ @author\ (Subina)\n\ @version\ (version\ 1.0\ 26/09/2023)\n
-comment1.params=fileName
-comment1.target=java.util.List\ readDataFromFile(java.lang.String)
-numComments=2
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment2.params=fileName
+comment2.target=java.util.List\ readDataFromFile(java.lang.String)
+comment3.params=students
+comment3.target=void\ printStudentsWithTotalMarks(java.util.List)
+comment4.params=students\ threshold
+comment4.target=void\ printStudentsBelowThreshold(java.util.List,\ double)
+comment5.params=students
+comment5.target=void\ printTopStudents(java.util.List)
+numComments=6
