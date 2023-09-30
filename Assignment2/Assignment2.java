@@ -47,54 +47,66 @@ public double calculateGPA() {
     * 4. Handles exceptions for file reading errors.
 */
 
-public static void main(String[] args) {
-        try {
-            List<Student> students = readDataFromFile("Studentsfile.csv");
-
-        // Menu System
+  public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int choice;
-        do {
-            System.out.println("\nMenu:");
-            System.out.println("1. Calculate the Total Marks of Students");
-            System.out.println("2. Print Students Scoring Less Than the Threshold");
-            System.out.println("3. Print Top 5 Students With Highest and Lowest Total Marks");
-            System.out.println("4. Exit");
-            System.out.print("Please select an option (1/2/3/4): ");
-            choice = scanner.nextInt();
+        String fileName;
 
-            switch (choice) {
-                case 1:
-                    printStudentsWithTotalMarks(students);
-                    break;
+        // Loop until a valid file name is provided
+        while (true) {
+            // Prompt the user for the CSV file name
+            System.out.print("Enter the CSV file name: ");
+            fileName = scanner.nextLine();
 
-                case 2:
-                    System.out.print("Specify the Threshold: ");
-                    double threshold = scanner.nextDouble();
-                    printStudentsBelowThreshold(students, threshold);
-                    break;
+            try {
+                List<Student> students = readDataFromFile(fileName);
 
-                case 3:
-                    printTopStudents(students);
-                    break;
+                // Menu System
+                int choice;
+                do {
+                    System.out.println("\nMenu:");
+                    System.out.println("1. Calculate the Total Marks of Students");
+                    System.out.println("2. Print Students Scoring Less Than the Threshold");
+                    System.out.println("3. Print Top 5 Students With Highest and Lowest Total Marks");
+                    System.out.println("4. Exit");
+                    System.out.print("Please select an option (1/2/3/4): ");
+                    choice = scanner.nextInt();
 
-                case 4:
-                    System.out.println("Exiting...");
-                    break;
+                    switch (choice) {
+                        case 1:
+                            printStudentsWithTotalMarks(students);
+                            break;
 
-                default:
-                    System.out.println("Invalid selection. Please choose a valid option.");
-                    break;
+                        case 2:
+                            System.out.print("Specify the Threshold: ");
+                            double threshold = scanner.nextDouble();
+                            printStudentsBelowThreshold(students, threshold);
+                            break;
+
+                        case 3:
+                            printTopStudents(students);
+                            break;
+
+                        case 4:
+                            System.out.println("Exiting...");
+                            break;
+
+                        default:
+                            System.out.println("Invalid selection. Please choose a valid option.");
+                            break;
+                    }
+                } while (choice != 4);
+
+                break; // Exit the loop if valid data is read
+
+            } catch (FileNotFoundException e) {
+                System.err.println("Error: The CSV file '" + fileName + "' was not found. Please try again.");
+            } catch (IOException e) {
+                System.err.println("File reading error: " + e.getMessage() + " Please try again.");
             }
-        } while (choice != 4);
+        }
 
         scanner.close();
-         } catch (FileNotFoundException e) {
-        System.err.println("Error: The CSV file 'Studentsfile.csv' was not found.");
-        } catch (IOException e) {
-        System.err.println("File reading error: " + e.getMessage());
-}
-}
+    }
 
 /**
      * Reads student data from a CSV file and returns a list of Student objects.
