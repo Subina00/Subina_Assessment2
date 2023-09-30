@@ -151,13 +151,20 @@ static void printStudentsWithTotalMarks(List<Student> students) {
     * @param threshold The threshold for total marks.
     */
 static void printStudentsBelowThreshold(List<Student> students, double threshold) {
-    System.out.println("Students Scoring Less Than the Threshold:");
+    System.out.println("Students Scoring Less Than the Threshold (Threshold: " + threshold + "):");
+    boolean found = false; // Add a flag to track if any students are found below the threshold
+
     for (Student student : students) {
         if (student.getTotalMarks() < threshold) {
+            found = true;
             System.out.println(student.lastName + ", " + student.firstName +
                     " (ID: " + student.studentID + ") - Assignment Marks: " +
                     Arrays.toString(student.marks) + " - Total Marks: " + student.getTotalMarks());
         }
+    }
+
+    if (!found) {
+        System.out.println("No students found below the specified threshold.");
     }
 }
 
