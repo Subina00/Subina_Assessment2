@@ -13,7 +13,8 @@ public class Assignment2 {
 static class Student {
     String lastName, firstName, studentID;
     double[] marks;
-
+    
+// Constructor for creating a Student object
 public Student(String lastName, String firstName, String studentID, double[] marks) {
     this.lastName = lastName;
     this.firstName = firstName;
@@ -21,12 +22,15 @@ public Student(String lastName, String firstName, String studentID, double[] mar
     this.marks = marks;
     }
 
+// Method to calculate and return the total marks for a student
 public double getTotalMarks() {
      return Arrays.stream(marks).sum();
     }
-    
+  
+// Method to calculate and return the GPA for a student 
 public double calculateGPA() {
-    // Calculate GPA using the formula (totalMarks / 100) * 4
+    
+    // Method to calculate GPA using the formula (totalMarks / 100) * 4
     double totalMarks = getTotalMarks();
     double gpa = (totalMarks / 100) * 4;
     return gpa;
@@ -35,13 +39,19 @@ public double calculateGPA() {
 }
 
 /**
-* Main method to run the program.
+* Main method to run the Assignment2 program.
+* This method performs the following tasks:
+* 1. Reads student data from a CSV file.
+* 2. Displays a menu for the user to choose various operations.
+* 3. Based on the user's choice, it calls different methods to calculate statistics or exit.
+* 4. Handles exceptions for file reading errors.
 */
+
 public static void main(String[] args) {
         try {
             List<Student> students = readDataFromFile("Studentsfile.csv");
 
-            // Menu System
+        // Menu System
         Scanner scanner = new Scanner(System.in);
         int choice;
         do {
@@ -131,7 +141,7 @@ static List<Student> readDataFromFile(String fileName) throws IOException {
 }
 
 /**
-    * Prints the details of students along with their total marks.
+    * Prints the details of students along with their total marks and gpa.
     *
     * @param students The list of Student objects to print.
     */
@@ -162,7 +172,7 @@ static void printStudentsWithTotalMarks(List<Student> students) {
     */
 static void printStudentsBelowThreshold(List<Student> students, double threshold) {
     System.out.println("Students Scoring Less Than the Threshold (Threshold: " + threshold + "):");
-    boolean found = false; // Add a flag to track if any students are found below the threshold
+    boolean found = false; // Set a marker to indicate if any students are found below the threshold
 
     for (Student student : students) {
         if (student.getTotalMarks() < threshold) {
