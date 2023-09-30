@@ -55,11 +55,17 @@ public class Assignment2 {
                 do {
                     System.out.println("\nMenu:");
                     System.out.println("1. Read from file");
-                    System.out.println("2. Calculate the Total Marks of Students");
+                    System.out.println("2. Calculate the Total Marks and GPA of Students");
                     System.out.println("3. Print Students Scoring Less Than the Threshold");
                     System.out.println("4. Print Top 5 Students With Highest and Lowest Total Marks");
                     System.out.println("5. Exit");
                     System.out.print("Please select an option (1/2/3/4/5): ");
+
+                    while (!scanner.hasNextInt()) {
+                        System.out.println("Invalid input. Please enter a valid option (1/2/3/4/5): ");
+                        scanner.next();
+                    }
+
                     choice = scanner.nextInt();
                     scanner.nextLine(); // Consume newline
 
@@ -67,21 +73,30 @@ public class Assignment2 {
                         case 1:
                             readAndPrintStudentsFromFile(students, fileName);
                             break;
-                            
+
                         case 2:
                             printStudentsWithTotalMarks(students);
                             break;
 
                         case 3:
-                            System.out.print("Specify the Threshold: ");
-                            double threshold = scanner.nextDouble();
+                            double threshold;
+                            do {
+                                System.out.print("Specify the Threshold: ");
+                                while (!scanner.hasNextDouble()) {
+                                    System.out.println("Invalid input. Please enter a valid threshold: ");
+                                    scanner.next();
+                                }
+                                threshold = scanner.nextDouble();
+                                scanner.nextLine(); // Consume newline
+                            } while (threshold < 0.0 || threshold > 100.0);
+
                             printStudentsBelowThreshold(students, threshold);
                             break;
 
                         case 4:
                             printTopStudents(students);
                             break;
-                            
+
                         case 5:
                             System.out.println("Exiting...");
                             break;
