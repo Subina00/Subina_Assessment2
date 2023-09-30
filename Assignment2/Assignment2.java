@@ -39,12 +39,12 @@ public double calculateGPA() {
 }
 
 /**
-* Main method to run the Assignment2 program.
-* This method performs the following tasks:
-* 1. Reads student data from a CSV file.
-* 2. Displays a menu for the user to choose various operations.
-* 3. Based on the user's choice, it calls different methods to calculate statistics or exit.
-* 4. Handles exceptions for file reading errors.
+    * Main method to run the Assignment2 program.
+    * This method performs the following tasks:
+    * 1. Reads student data from a CSV file.
+    * 2. Displays a menu for the user to choose various operations.
+    * 3. Based on the user's choice, it calls different methods to calculate statistics or exit.
+    * 4. Handles exceptions for file reading errors.
 */
 
 public static void main(String[] args) {
@@ -89,9 +89,11 @@ public static void main(String[] args) {
         } while (choice != 4);
 
         scanner.close();
-    } catch (IOException e) {
+         } catch (FileNotFoundException e) {
+        System.err.println("Error: The CSV file 'Studentsfile.csv' was not found.");
+        } catch (IOException e) {
         System.err.println("File reading error: " + e.getMessage());
-    }
+}
 }
 
 /**
