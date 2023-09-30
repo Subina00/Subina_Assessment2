@@ -14,17 +14,25 @@ static class Student {
     String lastName, firstName, studentID;
     double[] marks;
 
-    public Student(String lastName, String firstName, String studentID, double[] marks) {
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.studentID = studentID;
-        this.marks = marks;
-        }
-
-    public double getTotalMarks() {
-        return Arrays.stream(marks).sum();
-        }
+public Student(String lastName, String firstName, String studentID, double[] marks) {
+    this.lastName = lastName;
+    this.firstName = firstName;
+    this.studentID = studentID;
+    this.marks = marks;
     }
+
+public double getTotalMarks() {
+     return Arrays.stream(marks).sum();
+    }
+    
+public double calculateGPA() {
+    // Calculate GPA using the formula (totalMarks / 100) * 4
+    double totalMarks = getTotalMarks();
+    double gpa = (totalMarks / 100) * 4;
+    return gpa;
+}
+
+}
 
 /**
 * Main method to run the program.
@@ -127,6 +135,7 @@ static List<Student> readDataFromFile(String fileName) throws IOException {
     *
     * @param students The list of Student objects to print.
     */
+
 static void printStudentsWithTotalMarks(List<Student> students) {
     for (Student student : students) {
         System.out.print(student.lastName + ", " + student.firstName +
@@ -138,9 +147,10 @@ static void printStudentsWithTotalMarks(List<Student> students) {
                 System.out.print(", ");
             }
             System.out.print(student.marks[i]);
-            }
+        }
 
-        System.out.println("] - Total Marks: " + student.getTotalMarks());
+        System.out.println("] - Total Marks: " + student.getTotalMarks() +
+                " - GPA: " + student.calculateGPA()); // Print GPA
     }
 }
 
