@@ -31,7 +31,7 @@ public class Assignment2 {
         // Method to calculate and return the GPA for a student
         public double calculateGPA() {
             double totalMarks = getTotalMarks();
-            double gpa = (totalMarks / 100) * 4;
+            double gpa = (totalMarks / 100) * 4; //Calculated gpa based on 4.0 scale
             return gpa;
         }
     }
@@ -113,8 +113,8 @@ public class Assignment2 {
 
         // Loop until a valid file name is provided or user chooses to exit
         while (true) {
-            // Prompt the user for the CSV file name
-            System.out.print("Enter the CSV file name: ");
+            // Prompt the user for the file name
+            System.out.print("Enter the file name: "); //The filename for this program is Studentsfile.csv
             fileName = scanner.nextLine();
 
             try {
@@ -127,7 +127,7 @@ public class Assignment2 {
                 int choice;
                 do {
                     System.out.println("\nMenu:");
-                    System.out.println("1. Read from file");
+                    System.out.println("1. Read Data from file");
                     System.out.println("2. Calculate the Total Marks of Students");
                     System.out.println("3. Print Students Scoring Less Than the Threshold");
                     System.out.println("4. Print Top 5 Students With Highest and Lowest Total Marks");
@@ -214,7 +214,7 @@ public class Assignment2 {
                             parts[i] = "0.0";
                         }
                     }
-                    // Print last name, first name, student ID, and marks
+                    // Print last name, first name, student ID, and assignment marks
                     System.out.println("Last Name: " + parts[0] +
                                        ", First Name: " + parts[1] +
                                        ", Student ID: " + parts[2] +
