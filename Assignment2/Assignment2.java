@@ -1,6 +1,13 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * This is the Assignment2 program that computes statistics of students' marks in an assignment.
+ *
+ * @author Subina
+ * @version 1.0 (26/09/2023)
+ */
+
 public class Assignment2 {
 
     // Inner class to represent a Student
@@ -71,6 +78,10 @@ public class Assignment2 {
                     }
                 }
             }
+
+            // Add the success message here
+            System.out.println("File successfully read.");
+
         } catch (IOException e) {
             throw e; // Re-throw the exception for handling in the main method
         } finally {
@@ -184,6 +195,38 @@ public class Assignment2 {
     }
 
     /**
+     * Reads and prints student data from a file, indicating last name, first name,
+     * student ID, and marks. Empty cells are considered as 0.0.
+     *
+     * @param students The list of Student objects to print.
+     * @param fileName The name of the CSV file to read.
+     */
+    static void readAndPrintStudentsFromFile(List<Student> students, String fileName) {
+        System.out.println("Reading and printing students from file: " + fileName);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.startsWith("//")) {
+                    String[] parts = line.split(",");
+                    for (int i = 0; i < parts.length; i++) {
+                        if (parts[i].isEmpty()) {
+                            parts[i] = "0.0";
+                        }
+                    }
+                    // Print last name, first name, student ID, and marks
+                    System.out.println("Last Name: " + parts[0] +
+                                       ", First Name: " + parts[1] +
+                                       ", Student ID: " + parts[2] +
+                                       ", Assignment Marks: " + Arrays.toString(Arrays.copyOfRange(parts, 3, parts.length)));
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("File reading error: " + e.getMessage());
+        }
+    }
+
+    /**
      * Prints the details of students along with their total marks and GPA.
      *
      * @param students The list of Student objects to print.
@@ -251,38 +294,6 @@ public class Assignment2 {
             System.out.println(student.lastName + ", " + student.firstName +
                     " (ID: " + student.studentID + ") - Assignment Marks: " +
                     Arrays.toString(student.marks) + " - Total Marks: " + student.getTotalMarks());
-        }
-    }
-
-    /**
-     * Reads and prints student data from a file, indicating last name, first name,
-     * student ID, and marks. Empty cells are considered as 0.0.
-     *
-     * @param students The list of Student objects to print.
-     * @param fileName The name of the CSV file to read.
-     */
-    static void readAndPrintStudentsFromFile(List<Student> students, String fileName) {
-        System.out.println("Reading and printing students from file: " + fileName);
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (!line.startsWith("//")) {
-                    String[] parts = line.split(",");
-                    for (int i = 0; i < parts.length; i++) {
-                        if (parts[i].isEmpty()) {
-                            parts[i] = "0.0";
-                        }
-                    }
-                    // Print last name, first name, student ID, and marks
-                    System.out.println("Last Name: " + parts[0] +
-                                       ", First Name: " + parts[1] +
-                                       ", Student ID: " + parts[2] +
-                                       ", Marks: " + Arrays.toString(Arrays.copyOfRange(parts, 3, parts.length)));
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("File reading error: " + e.getMessage());
         }
     }
 }
