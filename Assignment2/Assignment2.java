@@ -52,19 +52,19 @@ public class Assignment2 {
 
             while ((line = reader.readLine()) != null) {
                 if (!line.startsWith("//")) {
-                    String[] parts = line.split(",");
-                    if (parts.length >= 4) {
-                        String lastName = parts[0];
-                        String firstName = parts[1];
-                        String studentID = parts[2];
-                        double[] marks = new double[parts.length - 3];
+                    String[] studentDataparts = line.split(",");
+                    if (studentDataparts.length >= 4) {
+                        String lastName = studentDataparts[0];
+                        String firstName = studentDataparts[1];
+                        String studentID = studentDataparts[2];
+                        double[] marks = new double[studentDataparts.length - 3];
 
-                        for (int i = 3; i < parts.length; i++) {
+                        for (int i = 3; i < studentDataparts.length; i++) {
                             try {
-                                if (parts[i].isEmpty()) {
+                                if (studentDataparts[i].isEmpty()) {
                                     marks[i - 3] = 0.0;
                                 } else {
-                                    marks[i - 3] = Double.parseDouble(parts[i]);
+                                    marks[i - 3] = Double.parseDouble(studentDataparts[i]);
                                 }
                             } catch (NumberFormatException e) {
                                 System.err.println("Error in processing student marks: " + line);
@@ -124,7 +124,7 @@ public class Assignment2 {
                 fileReadError = false;
 
                 // Menu System
-                int choice;
+                int Menuchoice;
                 do {
                     System.out.println("\nMenu:");
                     System.out.println("1. Read Data from file");
@@ -139,10 +139,10 @@ public class Assignment2 {
                         scanner.next();
                     }
 
-                    choice = scanner.nextInt();
+                    Menuchoice = scanner.nextInt();
                     scanner.nextLine(); // Consume newline
 
-                    switch (choice) {
+                    switch (Menuchoice) {
                         case 1:
                             readAndPrintStudentsFromFile(students, fileName);
                             break;
@@ -154,7 +154,7 @@ public class Assignment2 {
                         case 3:
                             double threshold;
                             do {
-                                System.out.print("Specify the Threshold: ");
+                                System.out.print("Specify the Threshold (0.0 - 100.0): ");
                                 while (!scanner.hasNextDouble()) {
                                     System.out.println("Invalid input. Please enter a valid threshold: ");
                                     scanner.next();
@@ -178,7 +178,7 @@ public class Assignment2 {
                             System.out.println("Invalid selection. Please choose a valid option.");
                             break;
                     }
-                } while (choice != 5);
+                } while (Menuchoice != 5);
 
                 break; // Exit the loop if valid data is read
 
@@ -208,17 +208,17 @@ public class Assignment2 {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (!line.startsWith("//")) {
-                    String[] parts = line.split(",");
-                    for (int i = 0; i < parts.length; i++) {
-                        if (parts[i].isEmpty()) {
-                            parts[i] = "0.0";
+                    String[] studentDataparts = line.split(",");
+                    for (int i = 0; i < studentDataparts.length; i++) {
+                        if (studentDataparts[i].isEmpty()) {
+                            studentDataparts[i] = "0.0";
                         }
                     }
                     // Print last name, first name, student ID, and assignment marks
-                    System.out.println("Last Name: " + parts[0] +
-                                       ", First Name: " + parts[1] +
-                                       ", Student ID: " + parts[2] +
-                                       ", Assignment Marks: " + Arrays.toString(Arrays.copyOfRange(parts, 3, parts.length)));
+                    System.out.println("Last Name: " + studentDataparts[0] +
+                                       ", First Name: " + studentDataparts[1] +
+                                       ", Student ID: " + studentDataparts[2] +
+                                       ", Assignment Marks: " + Arrays.toString(Arrays.copyOfRange(studentDataparts, 3, studentDataparts.length)));
                 }
             }
         } catch (IOException e) {
@@ -259,6 +259,7 @@ public class Assignment2 {
         boolean found = false;
 
         for (Student student : students) {
+            //Check if the student's total marks are below the threshold
             if (student.getTotalMarks() < threshold) {
                 found = true;
                 System.out.println(student.lastName + ", " + student.firstName +
