@@ -1,6 +1,13 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * This is the Assignment2 program that computes statistics of students' marks in an assignment.
+ *
+ * @author Subina
+ * @version 1.0 (26/09/2023)
+ */
+
 public class Assignment2 {
 
     // Inner class to represent a Student
@@ -30,6 +37,66 @@ public class Assignment2 {
     }
 
     /**
+     * Reads student data from a CSV file and returns a list of Student objects.
+     *
+     * @param fileName The name of the CSV file to read.
+     * @return A list of Student objects.
+     * @throws IOException If there is an error reading the file.
+     */
+    static List<Student> readDataFromFile(String fileName) throws IOException {
+        List<Student> students = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(fileName));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                if (!line.startsWith("//")) {
+                    String[] parts = line.split(",");
+                    if (parts.length >= 4) {
+                        String lastName = parts[0];
+                        String firstName = parts[1];
+                        String studentID = parts[2];
+                        double[] marks = new double[parts.length - 3];
+
+                        for (int i = 3; i < parts.length; i++) {
+                            try {
+                                if (parts[i].isEmpty()) {
+                                    marks[i - 3] = 0.0;
+                                } else {
+                                    marks[i - 3] = Double.parseDouble(parts[i]);
+                                }
+                            } catch (NumberFormatException e) {
+                                // Handle invalid marks gracefully
+                                System.err.println("Error in processing student marks: " + line);
+                                break;
+                            }
+                        }
+
+                        students.add(new Student(lastName, firstName, studentID, marks));
+                    } else {
+                        // Skip lines with insufficient data
+                        System.err.println("Skipped line with insufficient data: " + line);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw e; // Re-throw the exception for handling in the main method
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    // Handle any error during closing of the file
+                    System.err.println("Error while closing the file: " + e.getMessage());
+                }
+            }
+        }
+
+        return students;
+    }
+
+    /**
      * Main method to run the Assignment2 program.
      * This method performs the following tasks:
      * 1. Reads student data from a CSV file.
@@ -40,8 +107,9 @@ public class Assignment2 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String fileName;
+        boolean fileReadError = false; // Flag to track file read errors
 
-        // Loop until a valid file name is provided
+        // Loop until a valid file name is provided or user chooses to exit
         while (true) {
             // Prompt the user for the CSV file name
             System.out.print("Enter the CSV file name: ");
@@ -50,12 +118,15 @@ public class Assignment2 {
             try {
                 List<Student> students = readDataFromFile(fileName);
 
+                // Reset the fileReadError flag if the file was successfully read
+                fileReadError = false;
+
                 // Menu System
                 int choice;
                 do {
                     System.out.println("\nMenu:");
                     System.out.println("1. Read from file");
-                    System.out.println("2. Calculate the Total Marks and GPA of Students");
+                    System.out.println("2. Calculate the Total Marks of Students");
                     System.out.println("3. Print Students Scoring Less Than the Threshold");
                     System.out.println("4. Print Top 5 Students With Highest and Lowest Total Marks");
                     System.out.println("5. Exit");
@@ -110,9 +181,18 @@ public class Assignment2 {
                 break; // Exit the loop if valid data is read
 
             } catch (FileNotFoundException e) {
+                // Handle file not found error
                 System.err.println("Error: The CSV file '" + fileName + "' was not found. Please try again.");
+                fileReadError = true; // Set the fileReadError flag
             } catch (IOException e) {
+                // Handle other file reading errors
                 System.err.println("File reading error: " + e.getMessage() + " Please try again.");
+                fileReadError = true; // Set the fileReadError flag
+            }
+
+            // If a file read error occurred, continue the loop to allow the user to retry
+            if (fileReadError) {
+                continue;
             }
         }
 
@@ -120,63 +200,37 @@ public class Assignment2 {
     }
 
     /**
-     * Reads student data from a CSV file and returns a list of Student objects.
+     * Reads and prints student data from a file, indicating last name, first name,
+     * student ID, and marks. Empty cells are considered as 0.0.
      *
+     * @param students The list of Student objects to print.
      * @param fileName The name of the CSV file to read.
-     * @return A list of Student objects.
-     * @throws IOException If there is an error reading the file.
      */
-    static List<Student> readDataFromFile(String fileName) throws IOException {
-        List<Student> students = new ArrayList<>();
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(fileName));
-            String line;
+    static void readAndPrintStudentsFromFile(List<Student> students, String fileName) {
+        System.out.println("Reading and printing students from file: " + fileName);
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
             while ((line = reader.readLine()) != null) {
                 if (!line.startsWith("//")) {
                     String[] parts = line.split(",");
-                    if (parts.length >= 4) {
-                        String lastName = parts[0];
-                        String firstName = parts[1];
-                        String studentID = parts[2];
-                        double[] marks = new double[parts.length - 3];
-
-                        for (int i = 3; i < parts.length; i++) {
-                            try {
-                                if (parts[i].isEmpty()) {
-                                    marks[i - 3] = 0.0;
-                                } else {
-                                    marks[i - 3] = Double.parseDouble(parts[i]);
-                                }
-                            } catch (NumberFormatException e) {
-                                System.err.println("Error in processing student marks: " + line);
-                                break;
-                            }
+                    for (int i = 0; i < parts.length; i++) {
+                        if (parts[i].isEmpty()) {
+                            parts[i] = "0.0";
                         }
-
-                        students.add(new Student(lastName, firstName, studentID, marks));
-                    } else {
-                        System.err.println("Skipped line with insufficient data: " + line);
                     }
+                    // Print last name, first name, student ID, and marks
+                    System.out.println("Last Name: " + parts[0] +
+                                       ", First Name: " + parts[1] +
+                                       ", Student ID: " + parts[2] +
+                                       ", Marks: " + Arrays.toString(Arrays.copyOfRange(parts, 3, parts.length)));
                 }
             }
         } catch (IOException e) {
-            throw e; // Re-throw the exception for handling in the main method
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    // Handle any error during closing of the file
-                    System.err.println("Error while closing the file: " + e.getMessage());
-                }
-            }
+            System.err.println("File reading error: " + e.getMessage());
         }
-
-        return students;
     }
-
+    
     /**
      * Prints the details of students along with their total marks and GPA.
      *
@@ -245,33 +299,6 @@ public class Assignment2 {
             System.out.println(student.lastName + ", " + student.firstName +
                     " (ID: " + student.studentID + ") - Assignment Marks: " +
                     Arrays.toString(student.marks) + " - Total Marks: " + student.getTotalMarks());
-        }
-    }
-
-    /**
-     * Reads and prints student data from a file, considering empty cells as 0.0.
-     *
-     * @param students The list of Student objects to print.
-     * @param fileName The name of the CSV file to read.
-     */
-    static void readAndPrintStudentsFromFile(List<Student> students, String fileName) {
-        System.out.println("Reading and printing students from file: " + fileName);
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (!line.startsWith("//")) {
-                    String[] parts = line.split(",");
-                    for (int i = 0; i < parts.length; i++) {
-                        if (parts[i].isEmpty()) {
-                            parts[i] = "0.0";
-                        }
-                    }
-                    System.out.println(String.join(",", parts));
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("File reading error: " + e.getMessage());
         }
     }
 }
